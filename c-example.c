@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     RB partials_round2[4];
 
     for (uint8_t i = 0; i < 4; i++) {
-        partials_round2[i] = add(partials[i * 2], partials[(i * 2) + 1]);
+        partials_round2[i] = add(partials[i << 1], partials[(i << 1) | 1]);
     }
 
     printf("partials round 2\n");
@@ -107,7 +107,7 @@ int main(int argc, char** argv) {
     RB partials_round3[2];
 
     for (uint8_t i = 0; i < 2; i++) {
-        partials_round3[i] = add(partials_round2[i * 2], partials_round2[(i * 2) + 1]);
+        partials_round3[i] = add(partials_round2[i << 1], partials_round2[(i << 1) | 1]);
     }
 
     printf("partials round 3: \n");
