@@ -51,80 +51,17 @@ void printPartials(RB* partials, size_t size) {
 
 RB add(RB first, RB second) {
     RB carry;
-    // bool nextLowestNeitherNegative = true;
     RB sum;
-
-    // carry.positive = 0;
-    // carry.negative = 0;
-    // sum.positive = 0;
-    // sum.negative = 0;
 
     sum.positive = ((first.negative << 1) | (second.negative << 1)) & (first.positive ^ first.negative ^ second.positive ^ second.negative);
     sum.negative = (first.positive ^ first.negative ^ second.positive ^ second.negative) & ~((first.negative << 1) | (second.negative << 1));
     carry.positive = (first.positive & second.positive) | ((first.positive ^ second.positive) & ~(first.negative | second.negative) & ~((first.negative << 1) | (second.negative << 1)));
     carry.negative = (((first.negative << 1) | (second.negative << 1)) & ~(first.positive | second.positive) & (first.negative ^ second.negative)) | (first.negative & second.negative);
 
-    // for (uint8_t i = 0; i < 16; i++) {
-    //     int8_t firstVal = ((first.positive >> i) & 1) - ((first.negative >> i) & 1);
-    //     int8_t secondVal = ((second.positive >> i) & 1) - ((second.negative >> i) & 1);
-    //     int8_t val = firstVal + secondVal;
-
-    //     //printf("%d\n", (int)val);
-
-    //     switch (val) {
-    //         case -2: 
-    //             carry.negative |= (1 << i);
-    //             nextLowestNeitherNegative = false;
-    //             break;
-    //         case -1:
-    //             if (nextLowestNeitherNegative) {
-    //                 sum.negative |= (1 << i);
-    //             } else {
-    //                 carry.negative |= (1 << i);
-    //                 sum.positive |= (1 << i);
-    //             }
-    //             nextLowestNeitherNegative = false;
-    //             break;
-    //         case 0:
-    //             if (firstVal < 0 || secondVal < 0) {
-    //                 nextLowestNeitherNegative = false;
-    //             } else {
-    //                 nextLowestNeitherNegative = true;
-    //             }
-    //             break;
-    //         case 1:
-    //             if (nextLowestNeitherNegative) {
-    //                 carry.positive |= (1 << i);
-    //                 sum.negative |= (1 << i);
-    //             } else {
-    //                 sum.positive |= (1 << i);
-    //             }
-    //             nextLowestNeitherNegative = true;
-    //             break;
-    //         case 2:
-    //             carry.positive |= (1 << i);
-    //             nextLowestNeitherNegative = true;
-    //             break;
-    //     }
-    // }
-
-    // printf("sum positive: ");
-    // printBitString(sum.positive);
-    // printf("\n");
-    // printf("sum negative: ");
-    // printBitString(sum.negative);
-    // printf("\n");
-    // printf("carry positive: ");
-    // printBitString(carry.positive);
-    // printf("\n");
-    // printf("carry negative: ");
-    // printBitString(carry.negative);
-    // printf("\n\n");
-
     RB result;
 
-    result.positive = (sum.positive | (carry.positive << 1)) & ~(sum.negative) & ~(carry.negative << 1);// & (carry.negative << 1);
-    result.negative = (sum.negative | (carry.negative << 1)) & ~(sum.positive) & ~(carry.positive << 1);// & (carry.positive << 1);
+    result.positive = (sum.positive | (carry.positive << 1)) & ~(sum.negative) & ~(carry.negative << 1);
+    result.negative = (sum.negative | (carry.negative << 1)) & ~(sum.positive) & ~(carry.positive << 1);
 
     return result;
 }
