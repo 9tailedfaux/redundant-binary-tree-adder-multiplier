@@ -71,8 +71,12 @@ RB add(RB first, RB second) {
 
     //RB adder stage 2
 
-    result.positive = (sum.positive | (carry.positive << 1)) & ~(sum.negative) & ~(carry.negative << 1);
-    result.negative = (sum.negative | (carry.negative << 1)) & ~(sum.positive) & ~(carry.positive << 1);
+    result.positive = (sum.positive | (carry.positive << 1)) 
+        & ~(sum.negative) 
+        & ~(carry.negative << 1);
+    result.negative = (sum.negative | (carry.negative << 1)) 
+        & ~(sum.positive) 
+        & ~(carry.positive << 1);
 
     return result;
 }
