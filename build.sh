@@ -1,5 +1,6 @@
 #!/bin/bash
 
+mkdir -p build/
 if type "gcc" > /dev/null; then
     echo "Building using gcc"
     gcc -o build/build-c-example.bin c-example.c
