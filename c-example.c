@@ -45,7 +45,7 @@ void printPartials(RB* partials, size_t size) {
         printBitString(partials[i].positive);
         printf("\npartials[%d].negative: ", (int)i);
         printBitString(partials[i].negative);
-        printf("\n\n");
+        printf(" %d - %d = %d\n\n", (int)(partials[i].positive), (int)(partials[i].negative), (int)(partials[i].positive - partials[i].negative));
     }
 }
 
@@ -53,12 +53,23 @@ RB add(RB first, RB second) {
     RB carry;
     RB sum;
 
-    sum.positive = ((first.negative << 1) | (second.negative << 1)) & (first.positive ^ first.negative ^ second.positive ^ second.negative);
-    sum.negative = (first.positive ^ first.negative ^ second.positive ^ second.negative) & ~((first.negative << 1) | (second.negative << 1));
-    carry.positive = (first.positive & second.positive) | ((first.positive ^ second.positive) & ~(first.negative | second.negative) & ~((first.negative << 1) | (second.negative << 1)));
-    carry.negative = (((first.negative << 1) | (second.negative << 1)) & ~(first.positive | second.positive) & (first.negative ^ second.negative)) | (first.negative & second.negative);
+    //RB adder stage 1
+
+    sum.positive = ((first.negative << 1) | (second.negative << 1)) 
+        & (first.positive ^ first.negative ^ second.positive ^ second.negative);
+    sum.negative = (first.positive ^ first.negative ^ second.positive ^ second.negative) 
+        & ~((first.negative << 1) | (second.negative << 1));
+    carry.positive = (first.positive & second.positive) 
+        | ((first.positive ^ second.positive) 
+            & ~(first.negative | second.negative) 
+            & ~((first.negative << 1) | (second.negative << 1)));
+    carry.negative = (((first.negative << 1) | (second.negative << 1)) 
+            & ~(first.positive | second.positive) & (first.negative ^ second.negative))
+         | (first.negative & second.negative);
 
     RB result;
+
+    //RB adder stage 2
 
     result.positive = (sum.positive | (carry.positive << 1)) & ~(sum.negative) & ~(carry.negative << 1);
     result.negative = (sum.negative | (carry.negative << 1)) & ~(sum.positive) & ~(carry.positive << 1);
@@ -74,7 +85,7 @@ int main(int argc, char** argv) {
     }
 
     int8_t num1 = atoi(argv[1]);
-    uint8_t num2 = atoi(argv[2]);
+    uint8_t num2 = atoi(argv[2]); //it is a uint so right shifts can be logical
 
     RB partials[8];
 
