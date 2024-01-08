@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #define allOnes 0xFFFF
 #define allZeros 0x0000
@@ -54,6 +55,8 @@ RB add(RB first, RB second) {
     RB sum;
 
     //RB adder stage 1
+
+    int pid[4];
 
     sum.positive = ((first.negative << 1) | (second.negative << 1)) 
         & (first.positive ^ first.negative ^ second.positive ^ second.negative);
